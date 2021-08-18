@@ -14,8 +14,8 @@ class ShiftService
      public static function BatchCreate(array $data):Shift{
 
          // for the reason that there are user which have more than one shift
-         // we cache the returned data . So we could use it later and we can
-         // reduced the the amount of database query and we do this for other models as well
+         // we cache the returned data . So we could use it later, and we can
+         // reduce the amount of database query, and we do this for other models as well
          $user = Cache::remember($data['user_email'],3600,function () use ($data) {
              return User::firstOrCreate([
                  User::NAME_FIELD   => $data['user_name'],
@@ -77,9 +77,9 @@ class ShiftService
                  $departments_ids->push($department->id);
              }
 
-             // syncing many to many relation between department and shift
+             // syncing many-to-many relation between department and shift
              $shift->departments()
-                 ->syncWithoutDetaching($departments_ids);
+                   ->syncWithoutDetaching($departments_ids);
 
          }
          return $shift;

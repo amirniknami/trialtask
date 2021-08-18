@@ -16,7 +16,8 @@ class StoreShiftRequest extends FormRequest
     public function rules()
     {
         return [
-             'shifts' => ['array','required']
+             'shifts' => ['array','required_without:file'],
+             'file'   => ['file','mimetypes:application/json,text/plain']
         ];
     }
 }

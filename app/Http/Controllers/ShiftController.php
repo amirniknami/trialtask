@@ -7,6 +7,8 @@ use App\Http\Requests\ShiftIndexRequest;
 use App\Http\Requests\StoreShiftRequest;
 use App\Jobs\ImportShiftsJob;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Validation\ValidationException;
 
 /**
  *
@@ -26,14 +28,18 @@ class ShiftController extends Controller
     /**
      * @param StoreShiftRequest $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws ValidationException
      */
     public function store(StoreShiftRequest $request){
+
+
+            $array = $request->shifts ?? json_decode($request->file('file')->getContent(),true)['shifts'];
 
         // As it could be Millions of records we have to dispatch a queued job
         // so user will not be bother by the importing process
 
           //if there would be  millions of records the best thing is that chunking it into multiple array
-           foreach(collect($request->shifts)->chunk(static::CHUNKED_VALUE) as $items) {
+           foreach(collect($array)->chunk(static::CHUNKED_VALUE) as $items) {
                ImportShiftsJob::dispatch($items);
            }
           // as this is just a queue job and the process is continuing
