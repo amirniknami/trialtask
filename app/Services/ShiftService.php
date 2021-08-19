@@ -79,7 +79,7 @@ class ShiftService
 
              // syncing many-to-many relation between department and shift
              $shift->departments()
-                   ->syncWithoutDetaching($departments_ids);
+                   ->attach($departments_ids);
 
          }
          return $shift;
