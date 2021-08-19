@@ -16,9 +16,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::resource('shifts',\App\Http\Controllers\ShiftController::class)->only('store','index');
 
-Route::delete('/empty-app-data',\App\Http\Controllers\DataBaseController::class);
-
-
-Route::delete('/shifts',)->name('shifts.destroy');
+Route::delete('/empty-app-data',\App\Http\Controllers\DataBaseController::class)->name('app.emptyData');
 
 
