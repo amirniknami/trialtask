@@ -25,7 +25,7 @@ class ImportShiftsJob implements ShouldQueue
     /**
      * @var mixed
      */
-    protected $shifts,$repository;
+    protected $shifts, $repository;
     /**
      * Create a new job instance.
      *
@@ -44,17 +44,24 @@ class ImportShiftsJob implements ShouldQueue
      */
     public function handle()
     {
+        // Here we import the shifts to database using the Shiftrepository
+        // we check if 5 required properties are set due to fault tolerance
         try {
-            $this->shifts->map(function($shift){
-                $this->repository->create($shift);
+            $this->shifts->map(function ($shift) {
+                if (
+                    isset($shift['type'])  &&
+                    isset($shift['start']) &&
+                    isset($shift['end'])   &&
+                    isset($shift['user_email']) &&
+                    isset($shift['location'])
+                ) {
+                    $this->repository->create($shift);
+                }
             });
-        }
-        catch(\Exception $e) {
-            Log::error("There was an error proccessing importing of shifts. The Messahe Is:
+        } catch (\Exception $e) {
+            Log::error("There was an error processing importing of shifts. The Message Is:
                   {$e->getMessage()}
             ");
         }
-
-
     }
 }
