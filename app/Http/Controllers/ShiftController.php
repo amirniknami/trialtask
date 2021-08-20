@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Contracts\ShiftRepositoryContract;
 use App\Http\Requests\ShiftIndexRequest;
 use App\Http\Requests\StoreShiftRequest;
+use App\Http\Resources\ShiftResource;
 use App\Jobs\ImportShiftsJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -17,7 +18,8 @@ class ShiftController extends Controller
 {
 
     public function index(ShiftRepositoryContract $repository,ShiftIndexRequest $request){
-          return $repository->index($request);
+
+          return ShiftResource::collection($repository->index($request));
     }
 
     /**

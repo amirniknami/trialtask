@@ -24,7 +24,7 @@ interface ShiftRepositoryContract
 
     /**
      * @param ShiftIndexRequest $request
-     * @return AnonymousResourceCollection
+     * @return mixed
      */
-    public function index(ShiftIndexRequest $request): AnonymousResourceCollection;
+    public function index(ShiftIndexRequest $request);
 }

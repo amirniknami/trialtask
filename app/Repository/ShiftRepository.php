@@ -23,23 +23,23 @@ use Illuminate\Support\Facades\Cache;
 class ShiftRepository implements ShiftRepositoryContract
 {
 
+
     /**
      * @param ShiftIndexRequest $request
-     * @return AnonymousResourceCollection
+     * @return mixed
      */
-    public function index(ShiftIndexRequest $request): AnonymousResourceCollection
+    public function index(ShiftIndexRequest $request)
     {
 
-        return ShiftResource::collection(
-            Location::query()
+           return  Location::query()
                 ->where('name', request()->query('location'))
                 ->first()
                 ->shifts()
                 ->whereDate('start', '>=', Carbon::parse($request->query('start')))
                 ->whereDate('end', '<=', Carbon::parse($request->query('end')))
                 ->with(['user', 'location', 'event', 'departments'])
-                ->paginate(15)
-        );
+                ->paginate(15);
+
     }
 
     /**
