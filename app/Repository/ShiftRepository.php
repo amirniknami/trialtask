@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Cache;
 class ShiftRepository implements ShiftRepositoryContract
 {
 
-
+    public const PAGINATION_NUMBER = 15;
     /**
      * @param ShiftIndexRequest $request
      * @return mixed
@@ -32,13 +32,13 @@ class ShiftRepository implements ShiftRepositoryContract
     {
 
            return  Location::query()
-                ->where('name', request()->query('location'))
+                ->where('name', $request->query('location'))
                 ->first()
                 ->shifts()
                 ->whereDate('start', '>=', Carbon::parse($request->query('start')))
                 ->whereDate('end', '<=', Carbon::parse($request->query('end')))
                 ->with(['user', 'location', 'event', 'departments'])
-                ->paginate(15);
+                ->paginate(static::PAGINATION_NUMBER);
 
     }
 
